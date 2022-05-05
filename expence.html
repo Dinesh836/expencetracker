@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form onsubmit="saveToLocalStorage(event)">
+        <label for="ammount">Ammount:</label><br>
+        <input type="number" id="ammount" name="Ammount" required><br>
+        <label for="reason">Reason:</label><br>
+        <input type="text" id="reason" name="Reason" required><br>
+        <button id="btn">Add Expence</button>
+    </form>
+    <ul id="list"></ul>
+    <script>
+        function saveToLocalStorage(event) {
+            event.preventDefault();
+            const amnt = event.target.Ammount.value;
+            localStorage.setItem('amnt', amnt);
+            const obj={
+                amnt
+            }
+            listOfExpence(obj);
+        }
+        function listOfExpence(loe){
+            const parentNode=document.getElementById('list');
+            const childHTML=`<li id=${loe.amnt}> ${loe.amnt} 
+                <button onclick=editdata('${loe.amnt}')> Edit </button> 
+                 <button onclick=deletedata('${loe.amnt}')> Delete </button>
+                                     </li>`;
+            parentNode.innerHTML=parentNode.innerHTML+childHTML
+        }
+           
+        function deletedata(amnt){
+            localStorage.removeItem(amnt);
+            removeFromDash(amnt)
+        }
+            function removeFromDash(amnt){
+                const parentNode=document.getElementById("list");
+                const childNode=document.getElementById(amnt);
+                parentNode.removeChild(childNode);
+            }
+            function editFromDash(amnt){
+                document.getElementById('ammount').value=amnt;
+                deleteFromDash(amnt);
+            }
+    </script>
+</body>
+
+</html>
